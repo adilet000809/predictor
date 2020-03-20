@@ -41,7 +41,7 @@ public class UserProfileController {
         Users user = getUserData();
         if(passwordEncoder.matches(oldPassword, user.getPassword())){
             if(password1.equals(password2)){
-                user.setPassword(password1);
+                user.setPassword(passwordEncoder.encode(password1));
                 userRepository.save(user);
                 redirectAttributes.addFlashAttribute("changeSuccess", true);
             } else {
