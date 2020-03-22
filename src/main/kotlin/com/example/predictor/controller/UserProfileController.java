@@ -60,7 +60,7 @@ public class UserProfileController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if(!(authentication instanceof AnonymousAuthenticationToken)){
             User secUser = (User)authentication.getPrincipal();
-            userData = userRepository.findByEmail(secUser.getUsername());
+            userData = userRepository.findByEmail(secUser.getUsername()).get();
         }
         return userData;
     }
