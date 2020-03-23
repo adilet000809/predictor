@@ -30,7 +30,7 @@ public class UserProfileController {
         return "profile";
     }
 
-    @PostMapping(value = "changePassword")
+    @PostMapping(value = "change-password")
     private String changePassword(
             @RequestParam(name = "oldPassword") String oldPassword,
             @RequestParam(name = "password1") String password1,

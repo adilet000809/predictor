@@ -7,16 +7,22 @@ import com.example.predictor.repositories.RoleRepository
 import com.example.predictor.repositories.UserRepository
 import com.example.predictor.services.EmailService
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.http.HttpStatus
+import org.springframework.http.ResponseEntity
 import org.springframework.mail.SimpleMailMessage
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
+import org.springframework.web.bind.MissingServletRequestParameterException
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestParam
+import org.springframework.web.context.request.WebRequest
 import org.springframework.web.servlet.mvc.support.RedirectAttributes
+import java.lang.IllegalArgumentException
 import java.util.*
 import javax.servlet.http.HttpServletRequest
+
 
 @Controller
 class MainController {
@@ -98,7 +104,7 @@ class MainController {
             token.user = user.get()
             passwordTokenRepository!!.save(token)
 
-            var url: String = request.scheme + "://" + request.serverName + ":8004"
+            val url: String = request.scheme + "://" + request.serverName + ":8004"
 
             var mail: SimpleMailMessage = SimpleMailMessage()
             mail.setFrom("sake.bolatbek@gmail.com");
@@ -120,13 +126,17 @@ class MainController {
             model: Model
     ): String{
 
-        val token: PasswordToken = passwordTokenRepository!!.findByToken(passwordToken)
-        if (token.isExpired){
-            model.addAttribute("expired", true)
+        val token = passwordTokenRepository!!.findByToken(passwordToken)
+        if(token.isPresent){
+            if (token.get().isExpired){
+                model.addAttribute("expired", true)
+            } else {
+                model.addAttribute("token", token.get().token)
+            }
         } else {
-            model.addAttribute("expired", false)
-            model.addAttribute("token", token.token)
+            model.addAttribute("invalidToken", true)
         }
+
 
         return "resetPassword"
 
@@ -138,15 +148,20 @@ class MainController {
             @RequestParam(name = "password1") password: String,
             redirectAttrs: RedirectAttributes
     ): String{
-        val token: PasswordToken = passwordTokenRepository!!.findByToken(passwordToken)
+        val token = passwordTokenRepository!!.findByToken(passwordToken)
 
-        if(!token.isExpired){
-            var user: Users = token.user
-            user.password = passwordEncoder!!.encode(password)
-            userRepository!!.save(user)
-            passwordTokenRepository!!.delete(token)
-        } else {
-            redirectAttrs.addFlashAttribute("expired", true)
+        if(token.isPresent){
+            if(!token.get().isExpired){
+                var user: Users = token.get().user
+                user.password = passwordEncoder!!.encode(password)
+                userRepository!!.save(user)
+                passwordTokenRepository!!.delete(token.get())
+            } else {
+                redirectAttrs.addFlashAttribute("expired", true)
+                return "redirect:/reset"
+            }
+        } else{
+            redirectAttrs.addFlashAttribute("invalidToken", true)
             return "redirect:/reset"
         }
 
