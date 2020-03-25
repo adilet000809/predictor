@@ -130,6 +130,7 @@ class MainController {
         if(token.isPresent){
             if (token.get().isExpired){
                 model.addAttribute("expired", true)
+                passwordTokenRepository!!.delete(token.get())
             } else {
                 model.addAttribute("token", token.get().token)
             }
