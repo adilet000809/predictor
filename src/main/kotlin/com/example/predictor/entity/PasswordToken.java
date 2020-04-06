@@ -8,8 +8,6 @@ import java.util.Date;
 @Table(name = "token")
 public class PasswordToken {
 
-    private static final int EXPIRATION = 60 * 24;
-
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -44,21 +42,13 @@ public class PasswordToken {
         this.user = user;
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
     public Date getExpiration() {
         return expiration;
     }
 
     public void setExpiration(int hours) {
         Calendar now = Calendar.getInstance();
-        now.add(Calendar.HOUR, hours);
+        now.add(Calendar.MINUTE, hours);
         this.expiration = now.getTime();
     }
 

@@ -7,19 +7,14 @@ import com.example.predictor.repositories.RoleRepository
 import com.example.predictor.repositories.UserRepository
 import com.example.predictor.services.EmailService
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.http.HttpStatus
-import org.springframework.http.ResponseEntity
 import org.springframework.mail.SimpleMailMessage
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
-import org.springframework.web.bind.MissingServletRequestParameterException
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestParam
-import org.springframework.web.context.request.WebRequest
 import org.springframework.web.servlet.mvc.support.RedirectAttributes
-import java.lang.IllegalArgumentException
 import java.util.*
 import javax.servlet.http.HttpServletRequest
 
@@ -69,7 +64,7 @@ class MainController {
         if(password1 == password2){
             if (!userRepository!!.existsByEmail(email)){
                 val userRole = roleRepository?.getOne(2)
-                val user = Users(null, email, passwordEncoder!!.encode(password1), "$firstName $lastName", setOf(userRole))
+                val user = Users(email, passwordEncoder!!.encode(password1), "$firstName $lastName", setOf(userRole))
                 userRepository!!.save(user)
                 redirectAttrs.addFlashAttribute("success", true)
             } else{
@@ -106,7 +101,7 @@ class MainController {
 
             val url: String = request.scheme + "://" + request.serverName + ":8004"
 
-            var mail: SimpleMailMessage = SimpleMailMessage()
+            var mail = SimpleMailMessage()
             mail.setFrom("sake.bolatbek@gmail.com");
             mail.setTo(user.get().email)
             mail.setSubject("Reset password")

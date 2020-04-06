@@ -1,13 +1,9 @@
 package com.example.predictor.entity;
 
-
-import lombok.Data;
-
 import javax.persistence.*;
 import java.util.Date;
 
 @MappedSuperclass
-@Data
 public class BaseEntity {
 
     @Id
@@ -23,5 +19,13 @@ public class BaseEntity {
 
     @Column(name = "deleted_at")
     private Date deletedAt;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
 }

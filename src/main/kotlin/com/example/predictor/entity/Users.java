@@ -11,11 +11,6 @@ import java.util.Set;
 @Table(name = "users")
 public class Users extends BaseEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private Long id;
-
     @Column(name = "email", unique = true)
     private String email;
 
@@ -32,20 +27,11 @@ public class Users extends BaseEntity {
 
     }
 
-    public Users(Long id, String email, String password, String fullName, Set<Roles> roles) {
-        this.id = id;
+    public Users(String email, String password, String fullName, Set<Roles> roles) {
         this.email = email;
         this.password = password;
         this.fullName = fullName;
         this.roles = roles;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public String getEmail() {
