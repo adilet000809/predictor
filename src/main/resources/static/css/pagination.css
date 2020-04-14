@@ -2,7 +2,6 @@
     width: 100%;
 }
 
-/* Пагинация */
 .pagination {
     width: 100%;
     height: 44px;
@@ -52,14 +51,14 @@
 }
 
 .pagination a.current {
-    border-color: #ea4c89;
-    color: #ea4c89;
+    border-color: #71dd8a;
+    color: #71dd8a;
 }
 
 @media (hover) {
     .pagination a:hover {
-        border-color: #ea4c89;
-        color: #ea4c89;
+        border-color: #71dd8a;
+        color: #71dd8a;
     }
 }
 

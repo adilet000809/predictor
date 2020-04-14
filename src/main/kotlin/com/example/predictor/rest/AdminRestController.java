@@ -9,7 +9,10 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
 
 @RestController
 @RequestMapping(path = "/api/admin/")
@@ -20,13 +23,23 @@ public class AdminRestController {
 
     @GetMapping(path = "/category")
     @CrossOrigin(origins = "*", allowedHeaders = "*")
-    public ResponseEntity<Page<Category>> getAllItems(
+    public ResponseEntity<Page<Category>> getAllCategories(
             @PageableDefault(sort = {"id"}, direction = Sort.Direction.DESC) Pageable pageable
     ){
 
         Page<Category> page = categoryRepository.findAll(pageable);
 
         return new ResponseEntity<>(page, HttpStatus.OK);
+    }
+
+    @PostMapping(path = "/category/add")
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
+    public ResponseEntity<Category> addCategory(
+            @RequestBody Map<String, String> category
+            ){
+
+        return new ResponseEntity<>(categoryRepository.save(new Category(category.get("name"))), HttpStatus.OK);
+
     }
 
 }
