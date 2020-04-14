@@ -13,4 +13,9 @@ class AdminController {
         return "admin/admin";
     }
 
+    @GetMapping(value = ["category"])
+    fun getCategory(): String{
+        return "admin/admin";
+    }
+
 }

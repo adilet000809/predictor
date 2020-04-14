@@ -2,7 +2,70 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
       layout:decorator="layouts/main.html">
+<head>
+    <title>Admin</title>
+    <link rel="stylesheet" th:href="@{/css/pagination.css}" type="text/css">
+</head>
 <div layout:fragment="myContent" >
+
+    <template id="pagination-template">
+        <div class="pagination">
+            <div class="pagination__left">
+                <a href="#" v-if="hasPrev()" @click.prevent="changePage(prevPage)">Previous</a>
+            </div>
+            <div class="pagination__mid">
+                <ul>
+                    <li v-if="hasFirst()"><a href="#" @click.prevent="changePage(1)">1</a></li>
+                    <li v-if="hasFirst()">...</li>
+                    <li v-for="page in pages">
+                        <a href="#" @click.prevent="changePage(page)" :class="{ current: current == page }">
+                            {{ page }}
+                        </a>
+                    </li>
+                    <li v-if="hasLast()">...</li>
+                    <li v-if="hasLast()"><a href="#" @click.prevent="changePage(totalPages)">{{ totalPages }}</a></li>
+                </ul>
+            </div>
+            <div class="pagination__right">
+                <a href="#" v-if="hasNext()" @click.prevent="changePage(nextPage)">Next</a>
+            </div>
+        </div>
+    </template>
+
+    <div class="row" id="app">
+        <table class="table table-bordered">
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>
+                    <p>Action</p>
+                    <p><a class="button">Add</a></p>
+                </th>
+            </tr>
+            <tr v-for="category in categories">
+                <td>{{category.id}}</td>
+                <td>{{category.name}}</td>
+            </tr>
+            <tr>
+                <td>
+                    <a>Change/Delete</a>
+                </td>
+            </tr>
+        </table>
+
+        <pagination
+                :current="currentPage"
+                :total-pages="totalPages"
+                @page-changed="fetchCategories"
+        ></pagination>
+
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/vue.resource/1.0.3/vue-resource.min.js"></script>
+    <script th:src="@{/js/pagination.js}"></script>
+    <script th:src="@{/js/app.js}"></script>
+
 
 </div>
 </html>

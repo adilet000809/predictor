@@ -48,7 +48,7 @@ public class PasswordToken {
 
     public void setExpiration(int hours) {
         Calendar now = Calendar.getInstance();
-        now.add(Calendar.MINUTE, hours);
+        now.add(Calendar.HOUR, hours);
         this.expiration = now.getTime();
     }
 
