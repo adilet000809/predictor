@@ -8,14 +8,19 @@ import org.springframework.web.bind.annotation.RequestMapping
 @RequestMapping(value = ["admin/"])
 class AdminController {
 
-    @GetMapping(value = [""])
-    fun admin(): String{
-        return "admin/admin";
-    }
-
     @GetMapping(value = ["category"])
     fun getCategory(): String{
-        return "admin/admin";
+        return "admin/category";
+    }
+
+    @GetMapping(value = ["tournament"])
+    fun getTournament(): String{
+        return "admin/tournament";
+    }
+
+    @GetMapping(value = ["event"])
+    fun getEvent(): String{
+        return "admin/event";
     }
 
 }

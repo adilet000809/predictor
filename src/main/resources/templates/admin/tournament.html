@@ -8,40 +8,43 @@
 </head>
 <div layout:fragment="myContent" >
 
-    <div class="row mt-3" id="app">
+    <div class="row mt-3" id="tournament">
         <div class="col-md-12">
             <div class="card">
                 <div class="card-header">
                     <div class="row">
                         <div class="col-6">
-                            <h3 class="card-title">Categories</h3>
+                            <h3 class="card-title">Tournaments</h3>
                         </div>
                         <div class="col-6 pr-0 mr-0">
-                            <button class="btn btn-success mr-0" @click.prevent="addModal">Add category</button>
+                            <button class="btn btn-success mr-0" @click.prevent="addModal">Add tournament</button>
                         </div>
                     </div>
                 </div>
                 <div class="card-body table-responsive p-0">
                     <table class="table table-hover">
                         <tbody>
-                            <tr>
-                                <th>ID</th>
-                                <th>Name</th>
-                                <th>Action</th>
-                            </tr>
-                            <tr v-for="category in categories">
-                                <td>{{category.id}}</td>
-                                <td>{{category.name}}</td>
-                                <td><button class="btn btn-info" @click.prevent="editModal(category)">Change/Delete</button></td>
-                            </tr>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Category</th>
+                        </tr>
+                        <tr v-for="tournament in tournaments">
+                            <td>{{tournament.id}}</td>
+                            <td>{{tournament.name}}</td>
+                            <td>{{tournament.category.name}} : {{tournament.category.id}}</td>
+                            <td>
+                                <span><button class="btn btn-info" @click.prevent="editModal(tournament)">Update</button></span>
+                                <span><button class="btn btn-danger" @click.prevent="deleteModal(tournament)">Delete</button></span>
+                            </td>
+                        </tr>
                         </tbody>
                     </table>
                     <pagination
                             :current="currentPage"
                             :total-pages="totalPages"
-                            @page-changed="fetchCategories"
-                    ></pagination>
-
+                            @page-changed="fetchTournaments">
+                    </pagination>
                 </div>
             </div>
         </div>
@@ -49,25 +52,51 @@
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Add Category</h5>
+                        <h5 class="modal-title" id="tournamentModalLabel"><span v-if="!editMode">Add Tournament</span><span v-if="editMode">Update Tournament</span></h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
                     <div class="modal-body">
-                        <form id="categoryForm" class="form-group" @submit.prevent="editMode ? updateCategory() : addCategory()">
+                        <form id="tournamentForm" class="form-group" @submit.prevent="editMode ? updateTournament() : addTournament()">
+                            <input type="hidden" value="" name="id" v-model="form.id">
                             <div class="form-group">
                                 <label>Name:
                                     <input type="text" value="" name="name" v-model="form.name">
                                 </label>
+                                <label>Category:
+                                    <select name="categoryId" v-model="form.categoryId">
+                                        <option v-if="!editMode"></option>
+                                        <option v-for="category in categories" :value="category.id">{{category.name}}</option>
+                                    </select>
+                            </label>
                             </div>
 
                         </form>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button form="categoryForm" v-show="editMode" type="submit" class="btn btn-primary">Update</button>
-                        <button form="categoryForm" v-show="!editMode" type="submit" class="btn btn-primary">Add</button>
+                        <button form="tournamentForm" v-if="editMode" type="submit" class="btn btn-primary">Update</button>
+                        <button form="tournamentForm" v-if="!editMode" type="submit" class="btn btn-primary">Add</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Delete tournament</h5>
+                    </div>
+                    <div class="modal-body">
+                        <p>Are sure to delete?</p>
+                        <form id="deleteForm" @submit.prevent="deleteTournament()">
+                            <input type="hidden" name="id" value="" v-model="form.id">
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button form="deleteForm" type="submit" class="btn btn-danger">Delete</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
                     </div>
                 </div>
             </div>
@@ -101,7 +130,7 @@
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <script src="https://cdn.jsdelivr.net/vue.resource/1.0.3/vue-resource.min.js"></script>
     <script th:src="@{/js/pagination.js}"></script>
-    <script th:src="@{/js/app.js}"></script>
+    <script th:src="@{/js/tournament.js}"></script>
 
 </div>
 </html>

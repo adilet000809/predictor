@@ -5,19 +5,20 @@
 <head>
     <title>Admin</title>
     <link rel="stylesheet" th:href="@{/css/pagination.css}" type="text/css">
+    <link rel="stylesheet" th:href="@{/css/datetimepicker.css}" type="text/css">
 </head>
 <div layout:fragment="myContent" >
 
-    <div class="row mt-3" id="category">
+    <div class="row mt-3" id="event">
         <div class="col-md-12">
             <div class="card">
                 <div class="card-header">
                     <div class="row">
                         <div class="col-6">
-                            <h3 class="card-title">Categories</h3>
+                            <h3 class="card-title">Events</h3>
                         </div>
                         <div class="col-6 pr-0 mr-0">
-                            <button class="btn btn-success mr-0" @click.prevent="addModal">Add category</button>
+                            <button class="btn btn-success mr-0" @click.prevent="addModal">Add Event</button>
                         </div>
                     </div>
                 </div>
@@ -26,15 +27,25 @@
                         <tbody>
                             <tr>
                                 <th>ID</th>
-                                <th>Name</th>
+                                <th>Team1</th>
+                                <th>Team2</th>
+                                <th>Score Team1</th>
+                                <th>Score Team2</th>
+                                <th>Date</th>
+                                <th>Tournament</th>
                                 <th>Action</th>
                             </tr>
-                            <tr v-for="category in categories">
-                                <td>{{category.id}}</td>
-                                <td>{{category.name}}</td>
+                            <tr v-for="event in events">
+                                <td>{{event.id}}</td>
+                                <td>{{event.team1}}</td>
+                                <td>{{event.team2}}</td>
+                                <td>{{event.scoreTeam1}}</td>
+                                <td>{{event.scoreTeam2}}</td>
+                                <td>{{event.date}}</td>
+                                <td>{{event.tournament.name}} : {{event.tournament.id}}</td>
                                 <td>
-                                    <span><button class="btn btn-info" @click.prevent="editModal(category)">Update</button></span>
-                                    <span><button class="btn btn-danger" @click.prevent="deleteModal(category)">Delete</button></span>
+                                    <span><button class="btn btn-info" @click.prevent="editModal(event)">Update</button></span>
+                                    <span><button class="btn btn-danger" @click.prevent="deleteModal(event)">Delete</button></span>
                                 </td>
                             </tr>
                         </tbody>
@@ -42,7 +53,7 @@
                     <pagination
                             :current="currentPage"
                             :total-pages="totalPages"
-                            @page-changed="fetchCategories">
+                            @page-changed="fetchTournaments">
                     </pagination>
                 </div>
             </div>
@@ -51,25 +62,52 @@
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel"><span v-if="!editMode">Add Category</span><span v-if="editMode">Update Category</span></h5>
+                        <h5 class="modal-title" id="tournamentModalLabel"><span v-if="!editMode">Add Event</span><span v-if="editMode">Update Event</span></h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
                     <div class="modal-body">
-                        <form id="categoryForm" class="form-group" @submit.prevent="editMode ? updateCategory() : addCategory()">
+                        <form id="eventForm" class="form-group" @submit.prevent="editMode ? updateEvent() : addEvent()">
                             <input type="hidden" value="" name="id" v-model="form.id">
-                            <div class="form-group">
-                                <label>Name:
-                                    <input type="text" value="" name="name" v-model="form.name">
+                            <div class="form-row">
+                                <label>Team1:
+                                    <input type="text" value="" name="name" v-model="form.team1">
+                                </label>
+                            </div>
+                            <div class="form-row">
+                                <label>Team2:
+                                    <input type="text" value="" name="name" v-model="form.team2">
+                                </label>
+                            </div>
+                            <div class="form-row" v-if="editMode">
+                                <label>Score Team1:
+                                    <input type="text" value="" name="name" v-model="form.scoreTeam1">
+                                </label>
+                            </div>
+                            <div class="form-row" v-if="editMode">
+                                <label>Score Team2:
+                                    <input type="text" value="" name="name" v-model="form.scoreTeam2">
+                                </label>
+                            </div>
+                            <div class="form-row">
+                                <label for="datetimepicker">Time:</label>
+                                <input id="datetimepicker" type="text" name="date" v-model="form.date">
+                            </div>
+                            <div class="form-row">
+                                <label>Tournament:
+                                    <select name="tournamentId" v-model="form.tournamentId">
+                                        <option v-if="!editMode"></option>
+                                        <option v-for="tournament in tournaments" :value="tournament.id">{{tournament.name}}</option>
+                                    </select>
                                 </label>
                             </div>
                         </form>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button form="categoryForm" v-show="editMode" type="submit" class="btn btn-primary">Update</button>
-                        <button form="categoryForm" v-show="!editMode" type="submit" class="btn btn-primary">Add</button>
+                        <button form="eventForm" v-if="editMode" type="submit" class="btn btn-primary">Update</button>
+                        <button form="eventForm" v-if="!editMode" type="submit" class="btn btn-primary">Add</button>
                     </div>
                 </div>
             </div>
@@ -78,11 +116,11 @@
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title">Delete category</h5>
+                        <h5 class="modal-title">Delete Event</h5>
                     </div>
                     <div class="modal-body">
                         <p>Are sure to delete?</p>
-                        <form id="deleteForm" @submit.prevent="deleteCategory()">
+                        <form id="deleteForm" @submit.prevent="deleteTournament()">
                             <input type="hidden" name="id" value="" v-model="form.id">
                         </form>
                     </div>
@@ -119,10 +157,26 @@
         </div>
     </template>
 
+    <script src="https://cdn.jsdelivr.net/npm/moment@2.22"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <script src="https://cdn.jsdelivr.net/vue.resource/1.0.3/vue-resource.min.js"></script>
     <script th:src="@{/js/pagination.js}"></script>
-    <script th:src="@{/js/category.js}"></script>
+    <script th:src="@{/js/event.js}"></script>
+    <script th:src="@{/js/datetime.js}" type="application/javascript"></script>
+
+
+    <script>
+        jQuery(document).ready(function($) {
+            if (window.jQuery().datetimepicker) {
+                $(function () {
+                    $('#datetimepicker').datetimepicker({
+                        step: 5
+                    });
+                });
+            }
+        });
+    </script>
+
 
 </div>
 </html>

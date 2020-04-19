@@ -1,26 +1,32 @@
 package com.example.predictor.entity
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties
+import java.util.*
 import javax.persistence.*
 
 @Entity
 @Table(name = "event")
-class Event(
+data class Event(
 
         @Column(name = "team1")
-        val team1: String,
+        var team1: String,
 
         @Column(name = "team2")
-        val team2: String,
+        var team2: String,
 
         @Column(name = "scoreTeam1", nullable = true)
-        var scoreTeam1: Double? = null,
+        var scoreTeam1: Int? = null,
 
         @Column(name = "scoreTeam2", nullable = true)
-        var scoreTeam2: Double? = null,
+        var scoreTeam2: Int? = null,
 
+        @Column(name = "date")
+        var date: Date,
+
+        @JsonIgnoreProperties("hibernateLazyInitializer", "handler")
         @ManyToOne(fetch = FetchType.EAGER)
         @JoinColumn(name = "tournament_id")
-        val tournament: Tournament
+        var tournament: Tournament
 
 ) : BaseEntity() {
 

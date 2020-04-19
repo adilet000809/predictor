@@ -1,14 +1,19 @@
 package com.example.predictor.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @Table(name = "tournament")
-public class Tournament extends BaseEntity {
+public class Tournament extends BaseEntity implements Serializable {
 
     @Column(name = "name")
     private String name;
 
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "category_id")
     private Category category;

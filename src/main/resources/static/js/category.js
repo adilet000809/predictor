@@ -1,10 +1,11 @@
 new Vue({
-    el: '#app',
+    el: '#category',
     data: {
         currentPage: 1,
         categories: [],
         totalPages: 0,
         form: {
+            id: '',
             name: ''
         },
         editMode: false
@@ -28,25 +29,58 @@ new Vue({
         addModal: function(){
             this.editMode = false;
             $('#addModal').modal('show');
+            this.form.id = '';
             this.form.name = '';
         },
         editModal: function (category) {
             this.editMode = true;
             $('#addModal').modal('show');
+            this.form.id = category.id;
             this.form.name = category.name;
         },
+        deleteModal: function(category){
+            $('#deleteModal').modal('show');
+            this.form.id = category.id;
+        },
         updateCategory: function () {
-
+            this.$http.put('http://localhost:8004/api/admin/category/update', {
+                id: this.form.id,
+                name: this.form.name,
+            }).then(
+                function (response) {
+                    console.log(response);
+                    $('#addModal').modal('hide');
+                    this.fetchCategories(this.currentPage)
+                }
+            ).catch(
+                function (error) {
+                    console.log(error)
+                }
+            )
         },
         addCategory: function () {
-            let category = {
-                name: this.form.name
-            };
             this.$http.post('http://localhost:8004/api/admin/category/add', {
                 name: this.form.name
             }).then(
                 function (response) {
-                    console.log(response)
+                    console.log(response);
+                    $('#addModal').modal('hide');
+                    this.fetchCategories(this.currentPage)
+                }
+            ).catch(
+                function (error) {
+                    console.log(error)
+                }
+            )
+        },
+        deleteCategory: function () {
+            this.$http.put('http://localhost:8004/api/admin/category/delete', {
+                id: this.form.id
+            }).then(
+                function (response) {
+                    console.log(response);
+                    $('#deleteModal').modal('hide');
+                    this.fetchCategories(this.currentPage)
                 }
             ).catch(
                 function (error) {
