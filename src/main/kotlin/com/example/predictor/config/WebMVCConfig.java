@@ -1,17 +1,17 @@
 package com.example.predictor.config;
 
+import com.example.predictor.handler.SuccessHandler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
-import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.i18n.CookieLocaleResolver;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 
+import java.text.SimpleDateFormat;
 import java.util.Locale;
 import java.util.Properties;
 
@@ -59,6 +59,11 @@ public class WebMVCConfig implements WebMvcConfigurer {
         props.put("mail.debug", "true");
 
         return mailSender;
+    }
+
+    @Bean
+    public SimpleDateFormat format(){
+        return new SimpleDateFormat("yyyy/MM/dd HH:mm");
     }
 
     @Override

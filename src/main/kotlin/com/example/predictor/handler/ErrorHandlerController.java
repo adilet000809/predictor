@@ -1,4 +1,4 @@
-package com.example.predictor.controller;
+package com.example.predictor.handler;
 
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ControllerAdvice;

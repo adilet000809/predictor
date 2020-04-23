@@ -11,5 +11,6 @@ import java.util.List;
 public interface EventRepository extends JpaRepository<Event, Long> {
 
     Page<Event>  findAllByDeletedAtNullAndTournament_DeletedAtNull(Pageable pageable);
-    List<Tournament> findAllByDeletedAtNullAndTournament_DeletedAtNull();
+    List<Event> findAllByDeletedAtNullAndTournament(Pageable pageable, Tournament tournament);
+
 }

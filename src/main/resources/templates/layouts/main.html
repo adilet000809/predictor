@@ -63,24 +63,7 @@
         </div>
         <div class="container-fluid mt-4">
             <div class="row">
-                <div class="col-sm-4">
-                    <ul class="list-group" sec:authorize="hasAnyRole('ROLE_ADMIN')">
-                        <li class="list-group-item"><a th:href="@{/admin/category}">Category</a></li>
-                        <li class="list-group-item"><a th:href="@{/admin/tournament}">Tournament</a></li>
-                        <li class="list-group-item"><a th:href="@{/admin/event}">Event</a></li>
-                    </ul>
-                    <ul class="list-group" sec:authorize="hasAnyRole('ROLE_MODERATOR')">
-                        <li class="list-group-item">All Items</li>
-                        <li class="list-group-item">Top Items</li>
-                    </ul>
-                    <ul class="list-group" sec:authorize="isAnonymous()">
-                        <li class="list-group-item">All Items</li>
-                    </ul>
-                    <ul class="list-group" sec:authorize="hasAnyRole('ROLE_USER')">
-                        <li class="list-group-item">PROFILE</li>
-                    </ul>
-                </div>
-                <div class="col-sm-8" layout:fragment="myContent" style="min-height: 700px;">
+                <div class="col-12 col-sm-12" layout:fragment="myContent" style="min-height: 700px;">
                 </div>
             </div>
         </div>
@@ -88,4 +71,7 @@
             <p style="color: white;">Copyright 2020, All Rights Reserved</p>
         </div>
     </body>
+    <!--<div class="col-sm-4">
+
+    </div>-->
 </html>

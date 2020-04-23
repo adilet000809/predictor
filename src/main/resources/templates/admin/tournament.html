@@ -1,12 +1,12 @@
 <html xmlns:th="http://www.w3.org/1999/xhtml"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
-      layout:decorator="layouts/main.html">
+      layout:decorator="admin/admin.html">
 <head>
     <title>Admin</title>
     <link rel="stylesheet" th:href="@{/css/pagination.css}" type="text/css">
 </head>
-<div layout:fragment="myContent" >
+<div layout:fragment="adminContent" >
 
     <div class="row mt-3" id="tournament">
         <div class="col-md-12">

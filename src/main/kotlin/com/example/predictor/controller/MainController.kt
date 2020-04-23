@@ -8,6 +8,10 @@ import com.example.predictor.repositories.UserRepository
 import com.example.predictor.services.EmailService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.mail.SimpleMailMessage
+import org.springframework.security.authentication.AnonymousAuthenticationToken
+import org.springframework.security.core.Authentication
+import org.springframework.security.core.context.SecurityContextHolder
+import org.springframework.security.core.userdetails.User
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
@@ -38,8 +42,13 @@ class MainController {
     val passwordTokenRepository: PasswordTokenRepository? = null
 
     @GetMapping(path = ["/"])
-    fun index(): String{
+    fun index(model: Model): String{
         return "index"
+    }
+
+    @GetMapping(path = ["/admin"])
+    fun admin(): String{
+        return "admin/admin"
     }
 
     @GetMapping(path = ["/login"])
@@ -163,6 +172,16 @@ class MainController {
 
         return "redirect:/login"
 
+    }
+
+    fun getUserData(): Users? {
+        var userData: Users? = null
+        val authentication: Authentication = SecurityContextHolder.getContext().authentication
+        if (authentication !is AnonymousAuthenticationToken) {
+            val secUser: User = authentication.principal as User
+            userData = userRepository!!.findByEmail(secUser.username).get()
+        }
+        return userData
     }
 
 }

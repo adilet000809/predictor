@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.relational.core.sql.In;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -35,7 +34,8 @@ public class AdminRestController {
     @Autowired
     private EventRepository eventRepository;
 
-    SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd HH:mm");
+    @Autowired
+    private SimpleDateFormat format;
 
     @GetMapping(path = "/category")
     @CrossOrigin(origins = "*", allowedHeaders = "*")
@@ -179,6 +179,8 @@ public class AdminRestController {
     ){
 
         Page<Event> page = eventRepository.findAllByDeletedAtNullAndTournament_DeletedAtNull(pageable);
+        Event e = eventRepository.getOne(4L);
+        System.out.println(e.getDate());
 
         return new ResponseEntity<>(page, HttpStatus.OK);
     }
@@ -209,11 +211,16 @@ public class AdminRestController {
             @RequestBody Map<String, String> event
     ) throws ParseException {
 
+        Integer scoreTeam1 = null;
+        Integer scoreTeam2 = null;
+
         Long id = Long.parseLong(event.get("id"));
         String team1 = event.get("team1");
         String team2 = event.get("team2");
-        int scoreTeam1 = Integer.parseInt(event.get("scoreTeam1"));
-        int scoreTeam2 = Integer.parseInt(event.get("scoreTeam2"));
+        if(event.get("scoreTeam1")!=null && event.get("scoreTeam1")!=null){
+            scoreTeam1 = Integer.parseInt(event.get("scoreTeam1"));
+            scoreTeam2 = Integer.parseInt(event.get("scoreTeam2"));
+        }
         Date date = format.parse(event.get("date"));
         Tournament tournament = tournamentRepository.getOne(Long.parseLong(event.get("tournamentId")));
 
@@ -229,20 +236,19 @@ public class AdminRestController {
 
     }
 
-    /*@PutMapping(path = "/tournament/delete")
+    @PutMapping(path = "/event/delete")
     @CrossOrigin(origins = "*", allowedHeaders = "*")
-    public HttpStatus deleteTournament(
-            @RequestBody Map<String, String> tournament
+    public HttpStatus deleteEvent(
+            @RequestBody Map<String, String> event
     ){
 
-        Long id = Long.parseLong(tournament.get("id"));
-
-        Tournament t = tournamentRepository.getOne(id);
-        t.setDeletedAt(new Date());
-        tournamentRepository.save(t);
+        Long id = Long.parseLong(event.get("id"));
+        Event e = eventRepository.getOne(id);
+        e.setDeletedAt(new Date());
+        eventRepository.save(e);
 
         return HttpStatus.OK;
 
-    }*/
+    }
 
 }

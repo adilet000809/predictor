@@ -22,7 +22,6 @@ new Vue({
                     this.categories = response.data.content;
                     this.totalPages = parseInt(response.body.totalPages);
                     this.currentPage = page;
-                    console.log(response.body.totalPages)
                 }, console.log
             )
         },
@@ -48,7 +47,6 @@ new Vue({
                 name: this.form.name,
             }).then(
                 function (response) {
-                    console.log(response);
                     $('#addModal').modal('hide');
                     this.fetchCategories(this.currentPage)
                 }
@@ -63,7 +61,6 @@ new Vue({
                 name: this.form.name
             }).then(
                 function (response) {
-                    console.log(response);
                     $('#addModal').modal('hide');
                     this.fetchCategories(this.currentPage)
                 }
@@ -78,7 +75,6 @@ new Vue({
                 id: this.form.id
             }).then(
                 function (response) {
-                    console.log(response);
                     $('#deleteModal').modal('hide');
                     this.fetchCategories(this.currentPage)
                 }

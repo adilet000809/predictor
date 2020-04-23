@@ -21,7 +21,6 @@ new Vue({
             this.$http.get('http://localhost:8004/api/admin/tournaments').then(
                 function (response) {
                     this.tournaments = response.body;
-                    console.log(response.body);
                 }
             )
         },
@@ -34,11 +33,16 @@ new Vue({
             this.$http.get('http://localhost:8004/api/admin/event', options).then(
                 function (response) {
                     this.events = response.data.content;
+                    this.events.forEach(formatDate);
+                    function formatDate(item, index) {
+                        item.date = moment(new Date(item.date)).format("YYYY/MM/DD HH:mm:ss");
+                    }
                     this.totalPages = parseInt(response.body.totalPages);
                     this.currentPage = page;
-                }, console.log
+                },
             )
         },
+
         addModal: function(){
             this.editMode = false;
             $('#addModal').modal('show');
@@ -61,10 +65,10 @@ new Vue({
             this.form.date = event.date;
             this.form.tournamentId = event.tournament.id;
         },
-        /*deleteModal: function(tournament){
+        deleteModal: function(event){
             $('#deleteModal').modal('show');
-            //this.form.id = tournament.id;
-        },*/
+            this.form.id = event.id;
+        },
         updateEvent: function () {
             this.$http.put('http://localhost:8004/api/admin/event/update', {
                 id: this.form.id,
@@ -76,9 +80,8 @@ new Vue({
                 tournamentId: this.form.tournamentId
             }).then(
                 function (response) {
-                    console.log(response);
                     $('#addModal').modal('hide');
-                    this.events(this.currentPage)
+                    this.fetchEvents(this.currentPage)
                 }
             ).catch(
                 function (error) {
@@ -104,21 +107,20 @@ new Vue({
                 }
             )
         },
-        /*deleteTournament: function () {
-            this.$http.put('http://localhost:8004/api/admin/tournament/delete', {
+        deleteEvent: function () {
+            this.$http.put('http://localhost:8004/api/admin/event/delete', {
                 id: this.form.id
             }).then(
                 function (response) {
-                    console.log(response);
                     $('#deleteModal').modal('hide');
-                    this.fetchTournaments(this.currentPage)
+                    this.fetchEvents(this.currentPage)
                 }
             ).catch(
                 function (error) {
                     console.log(error)
                 }
             )
-        }*/
+        }
     },
     created: function () {
         this.fetchEvents(this.currentPage);

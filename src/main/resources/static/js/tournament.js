@@ -17,7 +17,6 @@ new Vue({
             this.$http.get('http://localhost:8004/api/admin/categories').then(
                 function (response) {
                     this.categories = response.body;
-                    console.log(response.body);
                 }
             )
         },
@@ -32,7 +31,6 @@ new Vue({
                     this.tournaments = response.data.content;
                     this.totalPages = parseInt(response.body.totalPages);
                     this.currentPage = page;
-                    console.log(response.body.totalPages)
                 }, console.log
             )
         },
@@ -79,7 +77,6 @@ new Vue({
                 categoryId: this.form.categoryId
             }).then(
                 function (response) {
-                    console.log(response);
                     $('#addModal').modal('hide');
                     this.fetchTournaments(this.currentPage)
                 }
@@ -94,7 +91,6 @@ new Vue({
                 id: this.form.id
             }).then(
                 function (response) {
-                    console.log(response);
                     $('#deleteModal').modal('hide');
                     this.fetchTournaments(this.currentPage)
                 }
