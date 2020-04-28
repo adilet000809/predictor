@@ -3,7 +3,7 @@
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
       layout:decorator="admin/admin.html">
 <head>
-    <title>#{label.admin}</title>
+    <title th:text="#{label.admin}"></title>
     <link rel="stylesheet" th:href="@{/css/pagination.css}" type="text/css">
 </head>
 <div layout:fragment="adminContent" >
@@ -14,10 +14,10 @@
                 <div class="card-header">
                     <div class="row">
                         <div class="col-6">
-                            <h3 class="card-title">#{label.tournaments}</h3>
+                            <h3 class="card-title" th:text="#{label.tournaments}"></h3>
                         </div>
                         <div class="col-6 pr-0 mr-0">
-                            <button class="btn btn-success mr-0" @click.prevent="addModal">#{label.addTournament}</button>
+                            <button class="btn btn-success mr-0" @click.prevent="addModal" th:text="#{label.addTournament}"></button>
                         </div>
                     </div>
                 </div>
@@ -25,7 +25,7 @@
                     <table class="table table-hover">
                         <tbody>
                         <tr>
-                            <th>ID</th>
+                            <th th:text="">ID</th>
                             <th>Name</th>
                             <th>Category</th>
                         </tr>
@@ -88,14 +88,14 @@
                         <h5 class="modal-title">Delete tournament</h5>
                     </div>
                     <div class="modal-body">
-                        <p>Are sure to delete?</p>
+                        <p th:text=#{label.catSureQuestion}"></p>
                         <form id="deleteForm" @submit.prevent="deleteTournament()">
                             <input type="hidden" name="id" value="" v-model="form.id">
                         </form>
                     </div>
                     <div class="modal-footer">
-                        <button form="deleteForm" type="submit" class="btn btn-danger">Delete</button>
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                        <button form="deleteForm" type="submit" class="btn btn-danger" th:text="label.tourDelete"></button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal" th:text="label.tourCancel></button>
                     </div>
                 </div>
             </div>
@@ -105,7 +105,7 @@
     <template id="pagination-template">
         <div class="pagination">
             <div class="pagination__left">
-                <a href="#" v-if="hasPrev()" @click.prevent="changePage(prevPage)">Previous</a>
+                <a href="#" v-if="hasPrev()" @click.prevent="changePage(prevPage)" th:text="label.previous"></a>
             </div>
             <div class="pagination__mid">
                 <ul>
@@ -121,7 +121,7 @@
                 </ul>
             </div>
             <div class="pagination__right">
-                <a href="#" v-if="hasNext()" @click.prevent="changePage(nextPage)">Next</a>
+                <a href="#" v-if="hasNext()" @click.prevent="changePage(nextPage)" th:text="label.next"></a>
             </div>
         </div>
     </template>

@@ -3,7 +3,7 @@
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
       layout:decorator="admin/admin.html">
 <head>
-    <title>#{label.admin}</title>
+    <title th:text="#{label.admin}"></title>
     <link rel="stylesheet" th:href="@{/css/pagination.css}" type="text/css">
 </head>
 <div layout:fragment="adminContent" >
@@ -17,7 +17,7 @@
                             <h3 class="card-title" th:text="#{label.categories}"></h3>
                         </div>
                         <div class="col-6 pr-0 mr-0">
-                            <button class="btn btn-success mr-0" @click.prevent="addModal">#{label.addCategory}</button>
+                            <button class="btn btn-success mr-0" @click.prevent="addModal" th:text="#{label.addCategory}"></button>
                         </div>
                     </div>
                 </div>
@@ -25,16 +25,16 @@
                     <table class="table table-hover">
                         <tbody>
                             <tr>
-                                <th>#{label.catID}</th>
-                                <th>#{label.catName}</th>
-                                <th>#{slabel.catAction}</th>
+                                <th th:text="#{label.catID}"></th>
+                                <th th:text="#{label.catName}"></th>
+                                <th th:text="#{label.catAction}"></th>
                             </tr>
                             <tr v-for="category in categories">
                                 <td>{{category.id}}</td>
                                 <td>{{category.name}}</td>
                                 <td>
-                                    <span><button class="btn btn-info" @click.prevent="editModal(category)">#{label.catUpdate}</button></span>
-                                    <span><button class="btn btn-danger" @click.prevent="deleteModal(category)">#{label.catDelete}</button></span>
+                                    <span><button class="btn btn-info" @click.prevent="editModal(category)" th:text="#{label.catUpdate}"></button></span>
+                                    <span><button class="btn btn-danger" @click.prevent="deleteModal(category)" th:text="#{label.catDelete}"></button></span>
                                 </td>
                             </tr>
                         </tbody>
@@ -51,7 +51,7 @@
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel"><span v-if="!editMode">#{label.addCategory}</span><span v-if="editMode">#{label.updateCategory}</span></h5>
+                        <h5 class="modal-title" id="exampleModalLabel"><span v-if="!editMode" th:text="#{label.addCategory}"></span><span v-if="editMode" th:text="#{label.updateCategory}"></span></h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -60,16 +60,16 @@
                         <form id="categoryForm" class="form-group" @submit.prevent="editMode ? updateCategory() : addCategory()">
                             <input type="hidden" value="" name="id" v-model="form.id">
                             <div class="form-group">
-                                <label>#{label.catName}:
+                                <label th:text="#{label.catName}">:
                                     <input type="text" value="" name="name" v-model="form.name">
                                 </label>
                             </div>
                         </form>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">#{label.catClose}</button>
-                        <button form="categoryForm" v-show="editMode" type="submit" class="btn btn-primary">#{label.catUpdate}</button>
-                        <button form="categoryForm" v-show="!editMode" type="submit" class="btn btn-primary">#{label.catAdd}</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal" th:text="#{label.catClose}"></button>
+                        <button form="categoryForm" v-show="editMode" type="submit" class="btn btn-primary" th:text="#{label.catUpdate}"></button>
+                        <button form="categoryForm" v-show="!editMode" type="submit" class="btn btn-primary" th:text="#{label.catAdd}"></button>
                     </div>
                 </div>
             </div>
@@ -78,17 +78,17 @@
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title">#{label.deleteCategory}</h5>
+                        <h5 class="modal-title" th:text="#{label.deleteCategory}"></h5>
                     </div>
                     <div class="modal-body">
-                        <p>#{label.catSureQuestion}</p>
+                        <p th:text="#{label.catSureQuestion}"></p>
                         <form id="deleteForm" @submit.prevent="deleteCategory()">
                             <input type="hidden" name="id" value="" v-model="form.id">
                         </form>
                     </div>
                     <div class="modal-footer">
-                        <button form="deleteForm" type="submit" class="btn btn-danger">#{label.catDelete}</button>
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">#{label.catCancel}</button>
+                        <button form="deleteForm" type="submit" class="btn btn-danger" th:text="#{label.catDelete}"></button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal" th:text="#{label.catCancel}"></button>
                     </div>
                 </div>
             </div>
@@ -98,7 +98,7 @@
     <template id="pagination-template">
         <div class="pagination">
             <div class="pagination__left">
-                <a href="#" v-if="hasPrev()" @click.prevent="changePage(prevPage)">#{label.previous}</a>
+                <a href="#" v-if="hasPrev()" @click.prevent="changePage(prevPage)" th:text="#{label.previous}"></a>
             </div>
             <div class="pagination__mid">
                 <ul>
@@ -114,7 +114,7 @@
                 </ul>
             </div>
             <div class="pagination__right">
-                <a href="#" v-if="hasNext()" @click.prevent="changePage(nextPage)">#{label.next}</a>
+                <a href="#" v-if="hasNext()" @click.prevent="changePage(nextPage)" th:text="#{label.next}"></a>
             </div>
         </div>
     </template>
