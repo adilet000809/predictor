@@ -3,7 +3,7 @@
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
       layout:decorator="admin/admin.html">
 <head>
-    <title>Admin</title>
+    <title>#{label.admin}</title>
     <link rel="stylesheet" th:href="@{/css/pagination.css}" type="text/css">
 </head>
 <div layout:fragment="adminContent" >
@@ -14,10 +14,10 @@
                 <div class="card-header">
                     <div class="row">
                         <div class="col-6">
-                            <h3 class="card-title">Categories</h3>
+                            <h3 class="card-title">#{label.categories}</h3>
                         </div>
                         <div class="col-6 pr-0 mr-0">
-                            <button class="btn btn-success mr-0" @click.prevent="addModal">Add category</button>
+                            <button class="btn btn-success mr-0" @click.prevent="addModal">#{label.addCategory}</button>
                         </div>
                     </div>
                 </div>
@@ -25,16 +25,16 @@
                     <table class="table table-hover">
                         <tbody>
                             <tr>
-                                <th>ID</th>
-                                <th>Name</th>
-                                <th>Action</th>
+                                <th>#{label.catID}</th>
+                                <th>#{label.catName}</th>
+                                <th>#{slabel.catAction}</th>
                             </tr>
                             <tr v-for="category in categories">
                                 <td>{{category.id}}</td>
                                 <td>{{category.name}}</td>
                                 <td>
-                                    <span><button class="btn btn-info" @click.prevent="editModal(category)">Update</button></span>
-                                    <span><button class="btn btn-danger" @click.prevent="deleteModal(category)">Delete</button></span>
+                                    <span><button class="btn btn-info" @click.prevent="editModal(category)">#{label.catUpdate}</button></span>
+                                    <span><button class="btn btn-danger" @click.prevent="deleteModal(category)">#{label.catDelete}</button></span>
                                 </td>
                             </tr>
                         </tbody>
@@ -51,7 +51,7 @@
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel"><span v-if="!editMode">Add Category</span><span v-if="editMode">Update Category</span></h5>
+                        <h5 class="modal-title" id="exampleModalLabel"><span v-if="!editMode">#{label.addCategory}</span><span v-if="editMode">#{label.updateCategory}</span></h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -60,16 +60,16 @@
                         <form id="categoryForm" class="form-group" @submit.prevent="editMode ? updateCategory() : addCategory()">
                             <input type="hidden" value="" name="id" v-model="form.id">
                             <div class="form-group">
-                                <label>Name:
+                                <label>#{label.catName}:
                                     <input type="text" value="" name="name" v-model="form.name">
                                 </label>
                             </div>
                         </form>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button form="categoryForm" v-show="editMode" type="submit" class="btn btn-primary">Update</button>
-                        <button form="categoryForm" v-show="!editMode" type="submit" class="btn btn-primary">Add</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">#{label.catClose}</button>
+                        <button form="categoryForm" v-show="editMode" type="submit" class="btn btn-primary">#{label.catUpdate}</button>
+                        <button form="categoryForm" v-show="!editMode" type="submit" class="btn btn-primary">#{label.catAdd}</button>
                     </div>
                 </div>
             </div>
@@ -78,17 +78,17 @@
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title">Delete category</h5>
+                        <h5 class="modal-title">#{label.deleteCategory}</h5>
                     </div>
                     <div class="modal-body">
-                        <p>Are sure to delete?</p>
+                        <p>#{label.catSureQuestion}</p>
                         <form id="deleteForm" @submit.prevent="deleteCategory()">
                             <input type="hidden" name="id" value="" v-model="form.id">
                         </form>
                     </div>
                     <div class="modal-footer">
-                        <button form="deleteForm" type="submit" class="btn btn-danger">Delete</button>
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                        <button form="deleteForm" type="submit" class="btn btn-danger">#{label.catDelete}</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">#{label.catCancel}</button>
                     </div>
                 </div>
             </div>
@@ -98,7 +98,7 @@
     <template id="pagination-template">
         <div class="pagination">
             <div class="pagination__left">
-                <a href="#" v-if="hasPrev()" @click.prevent="changePage(prevPage)">Previous</a>
+                <a href="#" v-if="hasPrev()" @click.prevent="changePage(prevPage)">#{label.previous}</a>
             </div>
             <div class="pagination__mid">
                 <ul>
@@ -114,7 +114,7 @@
                 </ul>
             </div>
             <div class="pagination__right">
-                <a href="#" v-if="hasNext()" @click.prevent="changePage(nextPage)">Next</a>
+                <a href="#" v-if="hasNext()" @click.prevent="changePage(nextPage)">#{label.next}</a>
             </div>
         </div>
     </template>
