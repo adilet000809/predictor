@@ -102,7 +102,8 @@ class MainController {
         if(!user!!.isPresent){
             redirectAttrs.addFlashAttribute("notFound", true)
         } else {
-            var token: PasswordToken = PasswordToken()
+            passwordTokenRepository!!.deleteAllByUser(user.get());
+            var token = PasswordToken()
             token.token = UUID.randomUUID().toString()
             token.setExpiration(1)
             token.user = user.get()
@@ -111,7 +112,7 @@ class MainController {
             val url: String = request.scheme + "://" + request.serverName + ":8004"
 
             var mail = SimpleMailMessage()
-            mail.setFrom("sake.bolatbek@gmail.com");
+            mail.setFrom("PasswordReset");
             mail.setTo(user.get().email)
             mail.setSubject("Reset password")
             mail.setText(url + "/reset?token=" + token.token)
@@ -141,7 +142,6 @@ class MainController {
         } else {
             model.addAttribute("invalidToken", true)
         }
-
 
         return "resetPassword"
 
