@@ -1,35 +1,37 @@
-<html xmlns:th="http://www.w3.org/1999/xhtml"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
-      layout:decorator="layouts/main.html">
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
-    <title>Sign in</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="author" content="">
+    <title>Sign In</title>
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
     <link rel="stylesheet" th:href="@{/css/signin.css}" type="text/css">
 </head>
 
-<div layout:fragment="myContent" >
+<body class="text-center">
 
-    <div class="row">
+    <div class="container">
 
-        <div class="row col-12 w-100">
+        <div class="row">
             <form class="form-signin" method="post" th:action="@{'/auth'}">
-                <p class="text-center"><img class="mb-4" th:src="@{/img/login.svg}" alt="Login" width="72" height="72"></p>
-                <h1 class="h3 mb-3 font-weight-normal text-center" th:text="#{label.loginPlease}"></h1>
+                <img class="mb-4" th:src="@{/img/login.svg}" alt="Login" width="72" height="72">
+                <h1 class="h3 mb-3 font-weight-normal" th:text="#{label.loginPlease}"></h1>
 
-                <input style="border-radius: 23px;" type="email" id="inputEmail" class="form-control mb-3" th:placeholder="#{label.email}" name="user_email" required="" autofocus="">
+                <input type="email" id="inputEmail" class="form-control" th:placeholder="#{label.email}" name="user_email" required="" autofocus="">
 
-                <input style="border-radius: 23px" type="password" id="inputPassword" class="form-control" name="user_password" th:placeholder="#{label.password}" required="">
+                <input type="password" id="inputPassword" class="form-control" name="user_password" th:placeholder="#{label.password}" required="">
 
-                <button class="button btn-block w-100" type="submit" th:text="#{label.login}"></button>
+                <button class="btn btn-lg btn-primary btn-block" type="submit" th:text="#{label.login}"></button>
 
-                <p>
-                    <a th:href="@{register}" th:text="#{label.register}"></a>
-                    <a class="float-right" th:href="@{'/forgot-password'}">Forgot password</a>
-                </p>
+                <a th:href="@{register}" th:text="#{label.register}"></a>
             </form>
+        </div>
+        <div class="row">
+            <a th:href="@{'/forgot-password'}">Forgot password</a>
         </div>
 
     </div>
 
-</div>
+</body>
 </html>
