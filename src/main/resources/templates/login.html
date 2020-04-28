@@ -1,3 +1,12 @@
+<html xmlns:th="http://www.w3.org/1999/xhtml"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="layouts/main.html">
+<head>
+    <title>Sign in</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="author" content="">
+    <title>#{label.signIn}</title>
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
@@ -11,18 +20,30 @@
 
 <body class="text-center">
 
-    <form class="form-signin" method="post" th:action="@{'/auth'}">
-        <img class="mb-4" th:src="@{/img/login.svg}" alt="Login" width="72" height="72">
-        <h1 class="h3 mb-3 font-weight-normal" th:text="#{label.loginPlease}"></h1>
+    <div class="container">
 
-        <input type="email" id="inputEmail" class="form-control" th:placeholder="#{label.email}" name="user_email" required="" autofocus="">
+        <div class="row">
+            <form class="form-signin" method="post" th:action="@{'/auth'}">
+                <img class="mb-4" th:src="@{/img/login.svg}" alt="Login" width="72" height="72">
+                <h1 class="h3 mb-3 font-weight-normal" th:text="#{label.loginPlease}"></h1>
 
-        <input type="password" id="inputPassword" class="form-control" name="user_password" th:placeholder="#{label.password}" required="">
+                <input type="email" id="inputEmail" class="form-control" th:placeholder="#{label.email}" name="user_email" required="" autofocus="">
 
-        <button class="btn btn-lg btn-primary btn-block" type="submit" th:text="#{label.login}"></button>
+                <input type="password" id="inputPassword" class="form-control" name="user_password" th:placeholder="#{label.password}" required="">
 
-        <a th:href="@{register}" th:text="#{label.register}"></a>
-    </form>
+                <button class="btn btn-lg btn-primary btn-block" type="submit" th:text="#{label.login}"></button>
+
+                <a th:href="@{register}" th:text="#{label.register}"></a>
+            </form>
+        </div>
+        <div class="row">
+            <a th:href="@{'/forgot-password'}">#{label.forgotPass}</a>
+        </div>
+        <div class="row">
+            <a th:href="@{'/forgot-password'}">Forgot password</a>
+        </div>
+
+    </div>
 
 </body>
 </html>

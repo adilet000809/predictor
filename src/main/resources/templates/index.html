@@ -1,8 +1,89 @@
 <html xmlns:th="http://www.w3.org/1999/xhtml"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
-      layout:decorator="layouts/main.html">
+             xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+             xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+             layout:decorator="layouts/main.html">
+<head>
+    <link rel="stylesheet" th:href="@{/css/pagination.css}" type="text/css">
+</head>
 <div layout:fragment="myContent" >
-    
+
+    <div class="row" id="app">
+        <div class="col-3 col-sm-3">
+            <ul class="list-group">
+                <li class="list-group-item">FILTER</li>
+                <div class=" list-group-item">
+                    <div class="col-3">
+                        <form>
+                            <div class="form-row">
+                                <label>Category
+                                    <select name="categoryId" v-model="form.categoryId" @change="changeCategory()">
+                                        <option v-for="category in categories" :value="category.id">{{category.name}}</option>
+                                    </select>
+                                </label>
+                            </div>
+                            <div class="form-row" v-if="tournament">
+                                <label>Tournament
+                                    <select name="tournamentId" v-model="form.tournamentId" @change="changeTournament()">
+                                        <option v-for="tournament in tournaments" :value="tournament.id">{{tournament.name}}</option>
+                                    </select>
+                                </label>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </ul>
+        </div>
+        <keep-alive>
+            <div class="col-9">
+                <div class="row">
+                    <div class="col-sm-12 col-md-6 col-4" v-for="event in events">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">{{event.team1}} VS {{event.team2}}</h5>
+                                <p class="card-text">{{event.date}}</p>
+                                <a href="#" class="btn btn-primary">Go somewhere</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <pagination
+                        :current="currentPage"
+                        :total-pages="totalPages"
+                        @page-changed="fetchEvents">
+                </pagination>
+            </div>
+        </keep-alive>
+    </div>
+
+    <template id="pagination-template" v-if="event">
+        <div class="pagination">
+            <div class="pagination__left">
+                <a href="#" v-if="hasPrev()" @click.prevent="changePage(prevPage)">Previous</a>
+            </div>
+            <div class="pagination__mid">
+                <ul>
+                    <li v-if="hasFirst()"><a href="#" @click.prevent="changePage(1)">1</a></li>
+                    <li v-if="hasFirst()">...</li>
+                    <li v-for="page in pages">
+                        <a href="#" @click.prevent="changePage(page)" :class="{ current: current == page }">
+                            {{ page }}
+                        </a>
+                    </li>
+                    <li v-if="hasLast()">...</li>
+                    <li v-if="hasLast()"><a href="#" @click.prevent="changePage(totalPages)">{{ totalPages }}</a></li>
+                </ul>
+            </div>
+            <div class="pagination__right">
+                <a href="#" v-if="hasNext()" @click.prevent="changePage(nextPage)">Next</a>
+            </div>
+        </div>
+    </template>
+
+    <script src="https://cdn.jsdelivr.net/npm/moment@2.22"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/vue.resource/1.0.3/vue-resource.min.js"></script>
+    <script th:src="@{/js/pagination.js}"></script>
+    <script th:src="@{/js/user/filter.js}"></script>
+
 </div>
 </html>
