@@ -20,7 +20,7 @@ public class TokenDeleter {
     @Autowired
     private PasswordTokenRepository passwordTokenRepository;
 
-    @Scheduled(fixedDelay = 6000)
+    @Scheduled(cron = "0 0 12 * * ?")
     public void purgeExpired() {
         Date now = Date.from(Instant.now());
         passwordTokenRepository.deleteAllByExpirationLessThan(now);

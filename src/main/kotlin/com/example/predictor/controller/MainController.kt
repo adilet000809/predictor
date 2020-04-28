@@ -7,6 +7,7 @@ import com.example.predictor.repositories.RoleRepository
 import com.example.predictor.repositories.UserRepository
 import com.example.predictor.services.EmailService
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.mail.SimpleMailMessage
 import org.springframework.security.authentication.AnonymousAuthenticationToken
 import org.springframework.security.core.Authentication
@@ -109,7 +110,8 @@ class MainController {
             token.user = user.get()
             passwordTokenRepository!!.save(token)
 
-            val url: String = request.scheme + "://" + request.serverName + ":8004"
+            val url: String = request.scheme + "://" + request.serverName + ":" + request.serverPort
+
 
             var mail = SimpleMailMessage()
             mail.setFrom("PasswordReset");

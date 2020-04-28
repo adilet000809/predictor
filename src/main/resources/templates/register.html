@@ -1,67 +1,68 @@
-<!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml"
+<html xmlns:th="http://www.w3.org/1999/xhtml"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+      layout:decorator="layouts/main.html">
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="author" content="">
-    <title>Sign Up</title>
-    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+    <title>Sign up</title>
     <link rel="stylesheet" th:href="@{/css/signin.css}" type="text/css">
 </head>
 
-<body class="text-center">
+<div layout:fragment="myContent" >
 
-    <div class="container">
-        <div class="row text-center">
-            <div class="alert alert-danger col-12" role="alert" th:if="${notUniqueEmail}" th:text="#{label.regEmailNotUnique}">
+    <div class="row">
+        <div class="row col-12 w-100">
+            <div class="alert alert-danger col-12" role="alert" th:if="${notUniqueEmail}">
+                <p class="text-center" th:text="#{label.regEmailNotUnique}"></p>
             </div>
 
             <div class="alert alert-danger col-12" role="alert" th:if="${passwordNotMatch}" th:text="#{label.regPasswordNotMatch}">
+                <p class="text-center" th:text="#{label.regPasswordNotMatch}"></p>
             </div>
 
             <div class="alert alert-success col-12" role="alert" th:if="${success}">
                 <p class="text-center" th:text="#{label.regSuccess}"></p>
-                <a href="/login" th:text="#{label.login}"></a>
+                <p class="text-center"><a href="/login" th:text="#{label.login}"></a></p>
             </div>
         </div>
 
-        <div class="row">
+        <div class="row col-12 w-100">
             <form class="form-signin" method="post" th:action="@{/signup}">
-                <img class="mb-4" th:src="@{/img/login.svg}" alt="Register" width="72" height="72">
-                <h1 class="h3 mb-3 font-weight-normal" th:text="#{label.regPlease}"></h1>
+                <p class="text-center"><img class="mb-4" th:src="@{/img/login.svg}" alt="Register" width="72" height="72"></p>
 
-                <input type="text" id="inputFirstName" name="first_name" class="form-control" th:placeholder="#{label.firstName}" required="" autofocus="">
+                <h1 class="h3 mb-3 font-weight-normal text-center" th:text="#{label.regPlease}"></h1>
 
-                <input type="text" id="inputLastName" name="last_name" class="form-control" th:placeholder="#{label.lastName}" required="" autofocus="">
+                <input style="border-radius: 23px;" type="text" id="inputFirstName" name="first_name" class="form-control" th:placeholder="#{label.firstName}" required="" autofocus="">
 
-                <input type="email" id="inputEmail" name="email" class="form-control" th:placeholder="#{label.email}" required="" autofocus="">
+                <input style="border-radius: 23px;" type="text" id="inputLastName" name="last_name" class="form-control" th:placeholder="#{label.lastName}" required="" autofocus="">
 
-                <input type="password" id="password1" name="password1" class="form-control" th:placeholder="#{label.password}" required="">
+                <input style="border-radius: 23px;" type="email" id="inputEmail" name="email" class="form-control" th:placeholder="#{label.email}" required="" autofocus="">
 
-                <input type="password" id="password2" name="password2" class="form-control" th:placeholder="#{label.confirmPassword}" required="">
+                <input style="border-radius: 23px;" type="password" id="password1" name="password1" class="form-control" th:placeholder="#{label.password}" required="">
 
-                <button class="btn btn-lg btn-primary btn-block" type="submit" th:text="#{label.register}"></button>
+                <input style="border-radius: 23px;" type="password" id="password2" name="password2" class="form-control" th:placeholder="#{label.confirmPassword}" required="">
+
+                <button class="btn button btn-block w-100" type="submit" th:text="#{label.register}"></button>
+
             </form>
+
         </div>
+
+        <script>
+            let password = document.getElementById("password1")
+                , confirm_password = document.getElementById("password2");
+
+            function validatePassword(){
+                if(password.value !== confirm_password.value) {
+                    confirm_password.setCustomValidity("Passwords Don't Match");
+                } else {
+                    confirm_password.setCustomValidity('');
+                }
+            }
+
+            password.onchange = validatePassword;
+            confirm_password.onkeyup = validatePassword;
+        </script>
+
     </div>
 
-    <script>
-        let password = document.getElementById("password1")
-            , confirm_password = document.getElementById("password2");
-
-        function validatePassword(){
-            if(password.value !== confirm_password.value) {
-                confirm_password.setCustomValidity("Passwords Don't Match");
-            } else {
-                confirm_password.setCustomValidity('');
-            }
-        }
-
-        password.onchange = validatePassword;
-        confirm_password.onkeyup = validatePassword;
-    </script>
-
-</body>
+</div>
 </html>
