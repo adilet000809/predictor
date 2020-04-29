@@ -63,7 +63,7 @@ public class WebMVCConfig implements WebMvcConfigurer {
 
     @Bean
     public SimpleDateFormat format(){
-        return new SimpleDateFormat("yyyy/MM/dd HH:mm");
+        return new SimpleDateFormat("yyyy-MM-dd HH:mm");
     }
 
     @Override

@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -182,7 +184,6 @@ public class AdminRestController {
 
         Page<Event> page = eventRepository.findAllByDeletedAtNullAndTournament_DeletedAtNull(pageable);
         Event e = eventRepository.getOne(4L);
-        System.out.println(e.getDate());
 
         return new ResponseEntity<>(page, HttpStatus.OK);
     }
@@ -195,9 +196,8 @@ public class AdminRestController {
 
         String team1 = event.get("team1");
         String team2 = event.get("team2");
-        //int scoreTeam1 = Integer.parseInt(event.get("scoreTeam1"));
-        //int scoreTeam2 = Integer.parseInt(event.get("scoreTeam2"));
-        Date date = format.parse(event.get("date"));
+
+        Date date = format.parse(event.get("date").replace("T", " "));
         Tournament tournament = tournamentRepository.getOne(Long.parseLong(event.get("tournamentId")));
 
         Event e = new Event(team1, team2, null, null, date, tournament);
@@ -223,7 +223,7 @@ public class AdminRestController {
             scoreTeam1 = Integer.parseInt(event.get("scoreTeam1"));
             scoreTeam2 = Integer.parseInt(event.get("scoreTeam2"));
         }
-        Date date = format.parse(event.get("date"));
+        Date date = format.parse(event.get("date").replace("T", " "));
         Tournament tournament = tournamentRepository.getOne(Long.parseLong(event.get("tournamentId")));
 
         Event e = eventRepository.getOne(id);

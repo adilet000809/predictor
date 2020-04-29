@@ -60,9 +60,8 @@
                         <form id="categoryForm" class="form-group" @submit.prevent="editMode ? updateCategory() : addCategory()">
                             <input type="hidden" value="" name="id" v-model="form.id">
                             <div class="form-group">
-                                <label th:text="#{label.catName}">:
-                                    <input type="text" value="" name="name" v-model="form.name">
-                                </label>
+                                <label for="categoryName" th:text="#{label.catName}"></label>
+                                <input id="categoryName" type="text" value="" name="name" v-model="form.name">
                             </div>
                         </form>
                     </div>

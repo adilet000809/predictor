@@ -35,7 +35,7 @@ new Vue({
                     this.events = response.data.content;
                     this.events.forEach(formatDate);
                     function formatDate(item, index) {
-                        item.date = moment(new Date(item.date)).format("YYYY/MM/DD HH:mm:ss");
+                        item.date = moment(new Date(item.date)).format("YYYY/MM/DD HH:mm");
                     }
                     this.totalPages = parseInt(response.body.totalPages);
                     this.currentPage = page;
