@@ -4,93 +4,78 @@
     <head>
         <title th:text = "#{label.title}"></title>
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" charset="UTF-8">
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-        <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
-        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+        <link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap.css}">
+        <link rel="stylesheet" type="text/css" th:href="@{/css/main.css}">
+        <link rel="stylesheet" type="text/css" th:href="@{/css/owl.carousel.min.css}">
+        <link rel="stylesheet" type="text/css" th:href="@{/css/owl.theme.default.min.css}">
+        <script th:src="@{/js/jquery-3.4.1.js}" type="application/javascript"></script>
+        <script th:src="@{/js/bootstrap.js}" type="application/javascript"></script>
+        <script th:src="@{/js/popper.min.js}" type="application/javascript"></script>
+        <script th:src="@{/js/popper.min.js}" type="application/javascript"></script>
+        <script th:src="@{/js/owl.carousel.min.js}" type="application/javascript"></script>
+        <script src="https://kit.fontawesome.com/73cbaad0ce.js"></script>
+        <link href="https://fonts.googleapis.com/css?family=Montserrat:400,800&display=swap&subset=cyrillic-ext" rel="stylesheet">
     </head>
     <body>
-        <div class="container-fluid">
-            <nav class="navbar navbar-expand-lg navbar-dark" style="background-color:rgba(133,42,46,0.98)">
-                <a class="navbar-brand" href="/" th:text = "#{label.title}"></a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+
+        <nav class="navbar navbar-expand-lg navbar-light navbar-expand-md bg-light sticky-top overlay">
+            <div class="container-fluid">
+                <a th:href="@{'/'}" class="navbar-brand"><img th:src="@{/img/logo.jpg}" alt="logo" width="50" href="50" style="border-radius: 50%;"></a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive">
+                    <span class="navbar-toggler-icon"></span>
+                    <span class="navbar-toggler-icon"></span>
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="collapse navbar-collapse">
-                    <ul class="navbar-nav mr-auto">
-                        <li class="nav-item">
-                            <a class="nav-link" th:href="@{'?lang=en'}">ENG</a>
+                <div class="collapse navbar-collapse" id="navbarResponsive">
+                    <ul class="navbar-nav ml-auto align-items-center">
+                        <li class="nav-item-active" sec:authorize="isAnonymous()">
+                            <a th:href="@{'/login'}" class="btn btn-block button" th:text="#{label.login}"></a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" th:href="@{'?lang=ru'}">РУС</a>
-                        </li>
-                    </ul>
-                </div>
-                <div class="collapse navbar-collapse" sec:authorize="isAnonymous()">
-                    <ul class="navbar-nav mr-auto">
-                        <li class="nav-item">
-                            <a class="nav-link" th:href="@{'/'}">Барлығы</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" th:href="@{'/register'}" th:text="#{label.register}"></a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" th:href="@{'/login'}" th:text="#{label.login}"></a>
-                        </li>
-                    </ul>
-                </div>
-                <div class="collapse navbar-collapse" sec:authorize="isAuthenticated()">
-                    <ul class="navbar-nav mr-auto">
-                        <li class="nav-item">
-                            <a class="nav-link" th:href="@{'/'}">All Items</a>
-                        </li>
-                        <li class="nav-item">
+                        <li class="nav-item" sec:authorize="isAuthenticated()">
                             <a class="nav-link" th:href="@{'/prof/'}">Profile</a>
                         </li>
-                        <li class="nav-item" sec:authorize="hasAnyRole('ROLE_ADMIN')">
-                            <a class="nav-link" th:href="@{'/users'}">Users</span></a>
-                        </li>
                         <li class="nav-item">
+                            <ul>
+                                <li class="nav-item"><a th:href="@{'?lang=en'}">English</a></li>
+                                <li class="nav-item"><a th:href="@{'?lang=ru'}">Русский</a></li>
+                            </ul>
+                        </li>
+                        <li class="nav-item" sec:authorize="isAuthenticated()">
                             <a class="nav-link" href="JavaScript:void(0)" onclick="toLogout()">Logout</a>
                         </li>
                     </ul>
                 </div>
-            </nav>
-            <form th:action = "@{'/signout'}" method="post" id = "logoutFormId">
+            </div>
+            <form th:action="@{'/signout'}" method="post" id = "logoutFormId">
             </form>
             <script type="text/javascript">
                 function toLogout() {
                     document.getElementById("logoutFormId").submit();
                 }
             </script>
-        </div>
+        </nav>
+
         <div class="container-fluid mt-4">
             <div class="row">
-                <div class="col-sm-4">
-                    <ul class="list-group" sec:authorize="hasAnyRole('ROLE_ADMIN')">
-                        <li class="list-group-item">All Items</li>
-                        <li class="list-group-item">Top Items</li>
-                        <li class="list-group-item">Electronics</li>
-                        <li class="list-group-item">Laptops</li>
-                        <li class="list-group-item">Mobile Phones</li>
-                    </ul>
-                    <ul class="list-group" sec:authorize="hasAnyRole('ROLE_MODERATOR')">
-                        <li class="list-group-item">All Items</li>
-                        <li class="list-group-item">Top Items</li>
-                    </ul>
-                    <ul class="list-group" sec:authorize="isAnonymous()">
-                        <li class="list-group-item">All Items</li>
-                    </ul>
-                    <ul class="list-group" sec:authorize="hasAnyRole('ROLE_USER')">
-                        <li class="list-group-item">PROFILE</li>
-                    </ul>
-                </div>
-                <div class="col-sm-8" layout:fragment="myContent" style="min-height: 700px;">
+                <div class="col-12 col-sm-12 w-100" layout:fragment="myContent" style="min-height: 700px;">
                 </div>
             </div>
         </div>
-        <div class="container-fluid mt-3 pt-3 pb-3" style="background-color: rgba(6,2,29,0.98)">
-            <p style="color: white;">Copyright 2020, All Rights Reserved</p>
-        </div>
+        <footer class="container-fluid bg-dark" id="contacts">
+            <div class="container text-white pt-2">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <h4 class="text-white">Address</h4>
+                        <p><i class="fas fa-map-marker-alt"></i> Kazakhstan, Almaty st.Zhandossov 34А(Manas)</p>
+                        <h6 class="text-white">© IITU 2020</h6>
+                    </div>
+                    <div class="col-sm-6 text-right">
+                        <h4 class="text-white">Contacts</h4>
+                        <p><i class="fas fa-phone"></i> +7(708) 506 09 08</p>
+                        <p><i class="fas fa-at"></i> java.predictor@gmail.com</p>
+                    </div>
+                </div>
+            </div>
+        </footer>
     </body>
 </html>

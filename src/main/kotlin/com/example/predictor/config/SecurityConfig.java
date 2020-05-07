@@ -11,6 +11,12 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import java.util.Arrays;
 
 @Configuration
 @EnableWebSecurity
@@ -19,6 +25,21 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     UserService userService;
+
+    @Autowired
+    AuthenticationSuccessHandler successHandler;
+
+    @Bean
+    CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOrigins(Arrays.asList("*"));
+        configuration.setAllowedMethods(Arrays.asList("*"));
+        configuration.setAllowedHeaders(Arrays.asList("*"));
+        configuration.setAllowCredentials(true);
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
+    }
 
     @Bean
     public PasswordEncoder passwordEncoder(){
@@ -37,6 +58,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 antMatchers("/css/**").permitAll().
                 antMatchers("/js/**").permitAll().
                 antMatchers("/img/**").permitAll().
+                antMatchers("/admin/**").hasRole("ADMIN").
                 antMatchers("/").permitAll();
 
         http.formLogin()
@@ -45,11 +67,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .loginPage("/login").permitAll()
                 .loginProcessingUrl("/auth").permitAll()
                 .failureUrl("/login?error").permitAll()
-                .defaultSuccessUrl("/prof/");
+                .successHandler(successHandler);
 
         http.logout()
                 .logoutSuccessUrl("/login")
                 .logoutUrl("/signout");
+
+        http.cors().and().csrf().disable();
 
     }
 

@@ -1,0 +1,135 @@
+<html xmlns:th="http://www.w3.org/1999/xhtml"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      layout:decorator="admin/admin.html">
+<head>
+    <title th:text="#{label.admin}"></title>
+    <link rel="stylesheet" th:href="@{/css/pagination.css}" type="text/css">
+</head>
+<div layout:fragment="adminContent">
+
+    <div class="row mt-3" id="tournament">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <div class="row">
+                        <div class="col-6">
+                            <h3 class="card-title" th:text="#{label.tournaments}"></h3>
+                        </div>
+                        <div class="col-6 pr-0 mr-0">
+                            <button class="btn btn-success mr-0" @click.prevent="addModal" th:text="#{label.addTournament}"></button>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body table-responsive p-0">
+                    <table class="table table-hover">
+                        <tbody>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Category</th>
+                        </tr>
+                        <tr v-for="tournament in tournaments">
+                            <td>{{tournament.id}}</td>
+                            <td>{{tournament.name}}</td>
+                            <td>{{tournament.category.name}} : {{tournament.category.id}}</td>
+                            <td>
+                                <span><button class="btn btn-info" @click.prevent="editModal(tournament)">Update</button></span>
+                                <span><button class="btn btn-danger" @click.prevent="deleteModal(tournament)">Delete</button></span>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <pagination
+                            :current="currentPage"
+                            :total-pages="totalPages"
+                            @page-changed="fetchTournaments">
+                    </pagination>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="tournamentModalLabel"><span v-if="!editMode">Add Tournament</span><span v-if="editMode">Update Tournament</span></h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="tournamentForm" class="form-group" @submit.prevent="editMode ? updateTournament() : addTournament()">
+                            <input type="hidden" value="" name="id" v-model="form.id">
+                            <div class="form-group">
+                                <label>Name:
+                                    <input type="text" value="" name="name" v-model="form.name">
+                                </label>
+                                <label>Category:
+                                    <select name="categoryId" v-model="form.categoryId">
+                                        <option v-if="!editMode"></option>
+                                        <option v-for="category in categories" :value="category.id">{{category.name}}</option>
+                                    </select>
+                            </label>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button form="tournamentForm" v-if="editMode" type="submit" class="btn btn-primary">Update</button>
+                        <button form="tournamentForm" v-if="!editMode" type="submit" class="btn btn-primary">Add</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Delete tournament</h5>
+                    </div>
+                    <div class="modal-body">
+                        <p>Are sure to delete?</p>
+                        <form id="deleteForm" @submit.prevent="deleteTournament()">
+                            <input type="hidden" name="id" value="" v-model="form.id">
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button form="deleteForm" type="submit" class="btn btn-danger">Delete</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <template id="pagination-template">
+        <div class="pagination">
+            <div class="pagination__left">
+                <a href="#" v-if="hasPrev()" @click.prevent="changePage(prevPage)">Previous</a>
+            </div>
+            <div class="pagination__mid">
+                <ul>
+                    <li v-if="hasFirst()"><a href="#" @click.prevent="changePage(1)">1</a></li>
+                    <li v-if="hasFirst()">...</li>
+                    <li v-for="page in pages">
+                        <a href="#" @click.prevent="changePage(page)" :class="{ current: current == page }">
+                            {{ page }}
+                        </a>
+                    </li>
+                    <li v-if="hasLast()">...</li>
+                    <li v-if="hasLast()"><a href="#" @click.prevent="changePage(totalPages)">{{ totalPages }}</a></li>
+                </ul>
+            </div>
+            <div class="pagination__right">
+                <a href="#" v-if="hasNext()" @click.prevent="changePage(nextPage)">Next</a>
+            </div>
+        </div>
+    </template>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/vue.resource/1.0.3/vue-resource.min.js"></script>
+    <script th:src="@{/js/pagination.js}"></script>
+    <script th:src="@{/js/tournament.js}"></script>
+
+</div>
+</html>

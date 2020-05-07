@@ -30,7 +30,7 @@ public class UserProfileController {
         return "profile";
     }
 
-    @PostMapping(value = "changePassword")
+    @PostMapping(value = "change-password")
     private String changePassword(
             @RequestParam(name = "oldPassword") String oldPassword,
             @RequestParam(name = "password1") String password1,
@@ -41,7 +41,7 @@ public class UserProfileController {
         Users user = getUserData();
         if(passwordEncoder.matches(oldPassword, user.getPassword())){
             if(password1.equals(password2)){
-                user.setPassword(password1);
+                user.setPassword(passwordEncoder.encode(password1));
                 userRepository.save(user);
                 redirectAttributes.addFlashAttribute("changeSuccess", true);
             } else {
@@ -60,7 +60,7 @@ public class UserProfileController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if(!(authentication instanceof AnonymousAuthenticationToken)){
             User secUser = (User)authentication.getPrincipal();
-            userData = userRepository.findByEmail(secUser.getUsername());
+            userData = userRepository.findByEmail(secUser.getUsername()).get();
         }
         return userData;
     }
