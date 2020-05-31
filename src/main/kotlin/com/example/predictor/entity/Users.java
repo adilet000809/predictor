@@ -1,5 +1,7 @@
 package com.example.predictor.entity;
 
+import org.springframework.boot.context.properties.bind.DefaultValue;
+
 import javax.persistence.*;
 import java.util.Set;
 
@@ -15,6 +17,9 @@ public class Users extends BaseEntity {
 
     @Column(name = "full_name")
     private String fullName;
+
+    @Column(name = "score", nullable = false, columnDefinition = "int default 100")
+    private int score;
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.REFRESH)
     private Set<Roles> roles;
@@ -62,4 +67,11 @@ public class Users extends BaseEntity {
         this.roles = roles;
     }
 
+    public int getScore() {
+        return score;
+    }
+
+    public void setScore(int score) {
+        this.score = score;
+    }
 }

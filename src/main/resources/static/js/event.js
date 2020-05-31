@@ -61,7 +61,7 @@ new Vue({
             this.form.team1  = event.team1;
             this.form.team2  = event.team2;
             this.form.scoreTeam1 = event.scoreTeam1;
-            this.form.scoreTeam2 = event.scoreTeam1;
+            this.form.scoreTeam2 = event.scoreTeam2;
             this.form.date = event.date;
             this.form.tournamentId = event.tournament.id;
         },

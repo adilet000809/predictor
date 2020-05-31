@@ -1,8 +1,6 @@
 package com.example.predictor.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-
 import javax.persistence.*;
 import java.io.Serializable;
 
@@ -41,4 +39,5 @@ public class Tournament extends BaseEntity implements Serializable {
     public void setCategory(Category category) {
         this.category = category;
     }
+
 }

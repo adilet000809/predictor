@@ -5,7 +5,6 @@
 <head>
     <title>#{label.admin}</title>
     <link rel="stylesheet" th:href="@{/css/pagination.css}" type="text/css">
-    <link rel="stylesheet" th:href="@{/css/datetimepicker.css}" type="text/css">
 </head>
 <div layout:fragment="adminContent" >
 
@@ -44,7 +43,7 @@
                                 <td>{{event.date}}</td>
                                 <td>{{event.tournament.name}} : {{event.tournament.id}}</td>
                                 <td>
-                                    <span><button class="btn btn-info" @click.prevent="editModal(event)">Update</button></span>
+                                    <span><button class="btn btn-info mb-2" @click.prevent="editModal(event)">Update</button></span>
                                     <span><button class="btn btn-danger" @click.prevent="deleteModal(event)">Delete</button></span>
                                 </td>
                             </tr>
@@ -72,31 +71,31 @@
                             <input type="hidden" value="" name="id" v-model="form.id">
                             <div class="form-row">
                                 <label>Team1:
-                                    <input type="text" value="" name="name" v-model="form.team1">
+                                    <input type="text" value="" class="form-control" name="name" v-model="form.team1">
                                 </label>
                             </div>
                             <div class="form-row">
                                 <label>Team2:
-                                    <input type="text" value="" name="name" v-model="form.team2">
+                                    <input type="text" value="" class="form-control" name="name" v-model="form.team2">
                                 </label>
                             </div>
                             <div class="form-row" v-if="editMode">
                                 <label>Score Team1:
-                                    <input type="text" value="" name="name" v-model="form.scoreTeam1">
+                                    <input type="text" value="" class="form-control" name="name" v-model="form.scoreTeam1">
                                 </label>
                             </div>
                             <div class="form-row" v-if="editMode">
                                 <label>Score Team2:
-                                    <input type="text" value="" name="name" v-model="form.scoreTeam2">
+                                    <input type="text" class="form-control" value="" name="name" v-model="form.scoreTeam2">
                                 </label>
                             </div>
                             <div class="form-row">
-                                <label for="datetimepicker">Time:</label>
-                                <input id="" type="datetime-local" name="date" v-model="form.date">
+                                <label for="datetimepicker">Time</label>
+                                <input id="datetimepicker" class="form-control" type="text" v-model="form.date">
                             </div>
                             <div class="form-row">
                                 <label>Tournament:
-                                    <select name="tournamentId" v-model="form.tournamentId">
+                                    <select class="form-control" name="tournamentId" v-model="form.tournamentId">
                                         <option v-if="!editMode"></option>
                                         <option v-for="tournament in tournaments" :value="tournament.id">{{tournament.name}}</option>
                                     </select>
@@ -162,21 +161,6 @@
     <script src="https://cdn.jsdelivr.net/vue.resource/1.0.3/vue-resource.min.js"></script>
     <script th:src="@{/js/pagination.js}"></script>
     <script th:src="@{/js/event.js}"></script>
-    <script th:src="@{/js/datetime.js}" type="application/javascript"></script>
-
-
-    <script>
-        jQuery(document).ready(function($) {
-            if (window.jQuery().datetimepicker) {
-                $(function () {
-                    $('#datetimepicker').datetimepicker({
-                        step: 5
-                    });
-                });
-            }
-        });
-    </script>
-
 
 </div>
 </html>
