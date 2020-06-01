@@ -2,6 +2,7 @@ package com.example.predictor.controller
 
 import com.example.predictor.entity.PasswordToken
 import com.example.predictor.entity.Users
+import com.example.predictor.repositories.EventRepository
 import com.example.predictor.repositories.PasswordTokenRepository
 import com.example.predictor.repositories.RoleRepository
 import com.example.predictor.repositories.UserRepository
@@ -17,6 +18,7 @@ import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.servlet.mvc.support.RedirectAttributes
@@ -29,6 +31,9 @@ class MainController {
 
     @Autowired
     val roleRepository: RoleRepository? = null
+
+    @Autowired
+    val eventRepository: EventRepository? = null
 
     @Autowired
     val userRepository: UserRepository? = null
@@ -174,6 +179,13 @@ class MainController {
 
         return "redirect:/login"
 
+    }
+
+    @GetMapping(path = ["/event/{id}"])
+    fun getEventDetails(@PathVariable id: Long, model: Model): String{
+        val event = eventRepository!!.getOne(id);
+        model.addAttribute("event", event)
+        return "eventDetails"
     }
 
     fun getUserData(): Users? {

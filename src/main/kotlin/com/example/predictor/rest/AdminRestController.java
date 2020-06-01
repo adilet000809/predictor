@@ -1,11 +1,7 @@
 package com.example.predictor.rest;
 
-import com.example.predictor.entity.Category;
-import com.example.predictor.entity.Event;
-import com.example.predictor.entity.Tournament;
-import com.example.predictor.repositories.CategoryRepository;
-import com.example.predictor.repositories.EventRepository;
-import com.example.predictor.repositories.TournamentRepository;
+import com.example.predictor.entity.*;
+import com.example.predictor.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -30,6 +26,9 @@ import java.util.Map;
 public class AdminRestController {
 
     @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
     private CategoryRepository categoryRepository;
 
     @Autowired
@@ -37,6 +36,9 @@ public class AdminRestController {
 
     @Autowired
     private EventRepository eventRepository;
+
+    @Autowired
+    private PredictionRepository predictionRepository;
 
     @Autowired
     private SimpleDateFormat format;
@@ -219,20 +221,26 @@ public class AdminRestController {
         Long id = Long.parseLong(event.get("id"));
         String team1 = event.get("team1");
         String team2 = event.get("team2");
-        if(event.get("scoreTeam1")!=null && event.get("scoreTeam1")!=null){
-            scoreTeam1 = Integer.parseInt(event.get("scoreTeam1"));
-            scoreTeam2 = Integer.parseInt(event.get("scoreTeam2"));
-        }
-        Date date = format.parse(event.get("date").replace("T", " "));
+        Date date = format.parse(event.get("date"));
         Tournament tournament = tournamentRepository.getOne(Long.parseLong(event.get("tournamentId")));
 
         Event e = eventRepository.getOne(id);
         e.setTeam1(team1);
         e.setTeam2(team2);
-        e.setScoreTeam1(scoreTeam1);
-        e.setScoreTeam2(scoreTeam2);
         e.setDate(date);
         e.setTournament(tournament);
+        if(event.get("scoreTeam1")!=null && event.get("scoreTeam2")!=null){
+            if(!event.get("scoreTeam1").equals("") && !event.get("scoreTeam2").equals("")){
+                scoreTeam1 = Integer.parseInt(event.get("scoreTeam1"));
+                scoreTeam2 = Integer.parseInt(event.get("scoreTeam2"));
+            }
+        }
+        e.setScoreTeam1(scoreTeam1);
+        e.setScoreTeam2(scoreTeam2);
+
+        if(scoreTeam1 != null && scoreTeam2 != null){
+            assignPoints(e);
+        }
 
         return new ResponseEntity<>(eventRepository.save(e), HttpStatus.OK);
 
@@ -251,6 +259,19 @@ public class AdminRestController {
 
         return HttpStatus.OK;
 
+    }
+
+    public void assignPoints(Event event){
+        List<Prediction> predictions = predictionRepository.findAllByEvent(event);
+        for (Prediction prediction: predictions){
+            Users user = prediction.getUser();
+            if(prediction.getPrediction().equals(event.getResult())){
+                user.setScore(user.getScore()+100);
+            } else {
+                user.setScore(user.getScore()-50);
+            }
+            userRepository.save(user);
+        }
     }
 
 }

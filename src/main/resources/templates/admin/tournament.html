@@ -62,10 +62,10 @@
                             <input type="hidden" value="" name="id" v-model="form.id">
                             <div class="form-group">
                                 <label>Name:
-                                    <input type="text" value="" name="name" v-model="form.name">
+                                    <input type="text" class="form-control" value="" name="name" v-model="form.name">
                                 </label>
                                 <label>Category:
-                                    <select name="categoryId" v-model="form.categoryId">
+                                    <select class="form-control" name="categoryId" v-model="form.categoryId">
                                         <option v-if="!editMode"></option>
                                         <option v-for="category in categories" :value="category.id">{{category.name}}</option>
                                     </select>
@@ -88,7 +88,7 @@
                         <h5 class="modal-title">Delete tournament</h5>
                     </div>
                     <div class="modal-body">
-                        <p>Are sure to delete?</p>
+                        <p>Are you sure to delete?</p>
                         <form id="deleteForm" @submit.prevent="deleteTournament()">
                             <input type="hidden" name="id" value="" v-model="form.id">
                         </form>

@@ -3,7 +3,7 @@
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
       layout:decorator="admin/admin.html">
 <head>
-    <title>#{label.admin}</title>
+    <title th:text="#{label.admin}"></title>
     <link rel="stylesheet" th:href="@{/css/pagination.css}" type="text/css">
 </head>
 <div layout:fragment="adminContent" >
@@ -61,7 +61,7 @@
                             <input type="hidden" value="" name="id" v-model="form.id">
                             <div class="form-group">
                                 <label for="categoryName" th:text="#{label.catName}"></label>
-                                <input id="categoryName" type="text" value="" name="name" v-model="form.name">
+                                <input id="categoryName" class="form-control" type="text" value="" name="name" v-model="form.name">
                             </div>
                         </form>
                     </div>
