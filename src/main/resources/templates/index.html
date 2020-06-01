@@ -11,18 +11,18 @@
     <div class="row" id="app">
         <div class="col-3 col-sm-3">
             <ul class="list-group">
-                <li class="list-group-item">FILTER</li>
+                <li class="list-group-item" th:text="#{label.filter}"></li>
                 <div class="list-group-item">
                     <div class="col-3">
                         <form class="form-row">
                             <div class="form-row">
-                                <label for="category">Category</label>
+                                <label for="category" th:text="#{label.category}"></label>
                                 <select id="category" class="form-control w-auto" name="categoryId" v-model="form.categoryId" @change="changeCategory()">
                                     <option v-for="category in categories" :value="category.id">{{category.name}}</option>
                                 </select>
                             </div>
                             <div class="form-row" v-if="tournament">
-                                <label for="tournament">Tournament</label>
+                                <label for="tournament" th:text="#{label.tournament}"></label>
                                 <select id="tournament" class="form-control w-auto" name="tournamentId" v-model="form.tournamentId" @change="changeTournament()">
                                     <option v-for="tournament in tournaments" :value="tournament.id">{{tournament.name}}</option>
                                 </select>

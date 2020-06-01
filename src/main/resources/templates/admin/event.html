@@ -3,7 +3,7 @@
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
       layout:decorator="admin/admin.html">
 <head>
-    <title>#{label.admin}</title>
+    <title th:text="#{label.admin}"></title>
     <link rel="stylesheet" th:href="@{/css/pagination.css}" type="text/css">
 </head>
 <div layout:fragment="adminContent" >
@@ -118,7 +118,7 @@
                         <h5 class="modal-title">Delete Event</h5>
                     </div>
                     <div class="modal-body">
-                        <p>Are sure to delete?</p>
+                        <p>Are you sure to delete?</p>
                         <form id="deleteForm" @submit.prevent="deleteEvent()">
                             <input type="hidden" name="id" value="" v-model="form.id">
                         </form>

@@ -25,9 +25,9 @@
                             </div>
                             <div class="row" sec:authorize="isAuthenticated()">
                                 <div class="ml-5 d-flex">
-                                    <button v-on:click.prevent="predict" th:event-id="${event.id}" th:data="${event.team1}" class="btn btn-outline-primary mt-3">Team1</button>
-                                    <button v-on:click.prevent="predict" th:event-id="${event.id}" th:data="Draw" class="btn btn-outline-primary mt-3 ml-5">Draw</button>
-                                    <button v-on:click.prevent="predict" th:event-id="${event.id}" th:data="${event.team2}" class="btn btn-outline-primary mt-3 ml-5">Team2</button>
+                                    <button v-on:click.prevent="predict" th:event-id="${event.id}" th:data="${event.team1}" class="btn btn-outline-primary mt-3" th:text="#{label.team1}"></button>
+                                    <button v-on:click.prevent="predict" th:event-id="${event.id}" th:data="Draw" class="btn btn-outline-primary mt-3 ml-5" th:text="#{label.draw}"></button>
+                                    <button v-on:click.prevent="predict" th:event-id="${event.id}" th:data="${event.team2}" class="btn btn-outline-primary mt-3 ml-5" th:text="#{label.team2}"></button>
                                 </div>
                             </div>
                         </div>
