@@ -85,9 +85,15 @@ public class UserRestController {
         Event event = eventRepository.getOne(Long.parseLong(prediction.get("eventId")));
         String data = prediction.get("prediction");
         Users user = getUserData();
-
-        Prediction p = new Prediction(event, user, data);
+        Prediction p;
+        if(predictionRepository.existsByEventAndUser(event, user)){
+            p = predictionRepository.findByEventAndUser(event, user);
+            p.setPrediction(data);
+        } else {
+            p = new Prediction(event, user, data);
+        }
         predictionRepository.save(p);
+
 
         return new ResponseEntity<>(p, HttpStatus.OK);
     }

@@ -1,6 +1,6 @@
 <html xmlns:th="http://www.w3.org/1999/xhtml"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security" xmlns:v-on="http://www.w3.org/1999/xhtml"
       layout:decorator="layouts/main.html">
 
 <div layout:fragment="myContent">
@@ -30,6 +30,10 @@
                                     <button v-on:click.prevent="predict" th:event-id="${event.id}" th:data="${event.team2}" class="btn btn-outline-primary mt-3 ml-5">Team2</button>
                                 </div>
                             </div>
+                        </div>
+                        <div class="row">
+                            <p v-show="success" class="text-success">Successful</p>
+                            <p v-show="error" class="text-danger">Something went wrong</p>
                         </div>
                     </div>
                 </div>

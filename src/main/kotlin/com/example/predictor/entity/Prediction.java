@@ -1,5 +1,7 @@
 package com.example.predictor.entity;
 
+import org.springframework.data.domain.Persistable;
+
 import javax.persistence.*;
 
 @Entity
