@@ -1,0 +1,43 @@
+<html xmlns:th="http://www.w3.org/1999/xhtml"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      layout:decorator="layouts/main.html">
+
+<div layout:fragment="myContent">
+    <div id="main" class="row ml-5 mr-5">
+        <div class="card mb-4 w-100">
+            <div class="card-body p-lg-4 p-xl-5">
+                <div class="row">
+                    <div class="col-12 col-sm-9 col-lg-8">
+                        <p class="m-0 p-0 text-uppercase font-weight-bold">Event</p>
+                        <h2 class="h2 mb-3 mt-1" th:text="${event.team1 + ' vs ' + event.team2}"></h2>
+                        <p class="pr-lg-5 text-muted" th:text="${event.tournament.name}"></p>
+                        <div class="row my-4">
+                            <div class="col col-sm-6 text-nowrap">
+                                <div class="d-flex mb-2">
+                                    <span class="font-weight-bold mr-2" th:text="${event.team1}"></span>
+                                </div>
+                            </div>
+                            <div class="col col-sm-6 text-nowrap">
+                                <div class="d-flex mb-2">
+                                    <span class="font-weight-bold mr-2" th:text="${event.team2}"></span>
+                                </div>
+                            </div>
+                            <div class="row" sec:authorize="isAuthenticated()">
+                                <div class="ml-5 d-flex">
+                                    <button v-on:click.prevent="predict" th:event-id="${event.id}" th:data="${event.team1}" class="btn btn-outline-primary mt-3" th:text="#{label.team1}"></button>
+                                    <button v-on:click.prevent="predict" th:event-id="${event.id}" th:data="Draw" class="btn btn-outline-primary mt-3 ml-5" th:text="#{label.draw}"></button>
+                                    <button v-on:click.prevent="predict" th:event-id="${event.id}" th:data="${event.team2}" class="btn btn-outline-primary mt-3 ml-5" th:text="#{label.team2}"></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/vue.resource/1.0.3/vue-resource.min.js"></script>
+    <script th:src="@{/js/user/predict.js}"></script>
+</div>
+
